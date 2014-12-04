@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<h1>CHAT ROOM</h1>
+
+	<div class="chatbox" style="height: 200px; width: 400px; border: 1px solid black; overflow: scroll"></div>
+	<input class="input" type="text" />
+
+
+	<button onclick="sendMessage()"></button>
+
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var socket = io();
+		var sendMessage = function(){
+			console.log(document.getElementsByClassName('input')[0].value);
+			var sentMessage = document.getElementsByClassName('input')[0].value;
+			//name message, first send message to 'message' to server side!
+			socket.emit('message', sentMessage);
+		};
+
+		socket.on('chatroom', function(d){
+			console.log(d);
+			line = document.createElement("ul")
+			text = document.createTextNode(d); 
+			line.appendChild(text);
+			document.getElementsByClassName('chatbox')[0].appendChild(line);
+			
+		});
+	</script>
+</body>
+</html>
